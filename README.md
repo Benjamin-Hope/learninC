@@ -252,6 +252,48 @@ The `while` loop checks the condition first before executing, while the ``do-whi
 
 _Note:_ **Nested Loops**: A nested loop is a loop inside another loop.
 
+### Enums
+
+Enums, or enumerators are user defined type of named integer identifiers. It helps to make a program more readable.
+
+```c
+enum Days = { Sun = 1, Tues = 2};
+
+int main(){
+
+    enum Day today = Sun;
+
+    return 0;
+}
+```
+
+### Random Numbers
+
+They in truth are **pseudo random numbers**. This means that they are a set of values or elements that are statistically random. But the seed is always the same, there for we **cannot** use this for any cryptography security.
+
+```c
+// Important to include this libraries at the top
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main(){
+
+    // Use the current type to generate a seed
+    srand(time(0)); // 's'rand is for 'seed'
+
+    int random_number = rand(); // random number between 0 - 32.767
+
+    /*To have a random number between 1 - 6 we can use the modulus operator:*/
+
+    int rand_6 = (rand() % 6) +1; // % 6 will give 0 - 5
+
+    return 0;
+}
+
+
+```
+
 ### Functions
 
 - [return type][function_name]{}:
@@ -417,6 +459,120 @@ name[strlen(name)-1] = '\0'
   - [Done] exited with **code=0** in 0.354 seconds
     Else if there is an error it will return
   - [Done] exited with **code=1** in 0.354 seconds
+
+### Structures
+
+A structure is a collection of related members/variables. They can be of diff data types listed under one name in a block of memory. This is very similar to classes (there are no methods in structures) in other languages.
+To access that structure we can call it by a variable name.
+
+```c
+struct Player{
+    char name[12];
+    int shirt_number;
+    int score;
+};
+
+int main(){
+    struct Player player1; // Here we are defining an item of the struct
+
+    strcpy(player1.name, "Bryan"); // Here we are copying and assigning the name "Bryan" to the name parameter of the 'player1'.
+    player1.score = 2;
+    player1.shirt_number = 12;
+}
+
+```
+
+###### Array of structs
+
+```c
+
+struct Students{
+    char name[25];
+    float gpa;
+}
+
+int main(){
+    struct Students student1 = {"Bob",11};
+    struct Students student2 = {"John",22};
+
+    struct Students students[] = {student1, student2};
+
+    return 0;
+}
+
+```
+
+### Typedef
+
+´typedef' is a reserved keyword that gives an existing datatype a "nickname".
+
+```c
+
+typedef char Nickname[25];
+
+int main(){
+    //FIXME: char user1[25] = "Bro"; // Writing this syntax can be annoying, so we can assign it to a nickname.
+    Nickname user1 = "bro";
+
+    return 0;
+}
+```
+
+This is very common to use also with structs:
+
+```c
+
+/*Before -- -- - --
+struct User{
+    char name[25];
+    char password[25];
+}
+*/
+
+typedef struct{
+    char name[25];
+    char password[25];
+} User;
+
+int main(){
+/*Before -- -- - --
+    struct User user1 = {"Name","password"};
+    struct User user2 = {"Name","password"};
+*/
+
+    User user1 = {"Name","password"};
+
+    return 0;
+}
+
+```
+
+### Bitwise Operators
+
+They are special operators used in bit level programming (binary);
+
+| Operator | Name        | Description                                                                  | Example  | Result                                 |
+| -------- | ----------- | ---------------------------------------------------------------------------- | -------- | -------------------------------------- |
+| `&`      | Bitwise AND | Performs a bitwise AND between two numbers.                                  | `a & b`  | 1 only if both bits are 1              |
+| `\|`     | Bitwise OR  | Performs a bitwise OR between two numbers.                                   | `a \| b` | 1 if at least one bit is 1             |
+| `^`      | Bitwise XOR | Performs a bitwise XOR (exclusive OR) between two numbers.                   | `a ^ b`  | 1 if only one of the bits is 1         |
+| `~`      | Bitwise NOT | Inverts all the bits (1 becomes 0, 0 becomes 1).                             | `~a`     | Flips all the bits of `a`              |
+| `<<`     | Left shift  | Shifts the bits of the left operand to the left by the number of positions.  | `a << 2` | Shifts bits of `a` two positions left  |
+| `>>`     | Right shift | Shifts the bits of the left operand to the right by the number of positions. | `a >> 2` | Shifts bits of `a` two positions right |
+
+```c
+
+int x = 12; // 00001100
+int y = 6; //  00000110
+int z = 0; //  00000000
+
+z = x & y;
+
+```
+
+### Memory
+
+
 
 ### ASCII Table
 
