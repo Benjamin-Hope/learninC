@@ -572,7 +572,215 @@ z = x & y;
 
 ### Memory
 
+**Memory** is an array of bytes within RAM (Street). A **block of memory** is a single unit (byte) within memory, used to hold some value (person). A **memory address** contains the address of where a memory block is located (house address).
 
+By declaring a variable, it is associated with some **memory address**, if we assign to it a value it contains a **memory block** with the assign information of the variable.
+
+One _block of memory_ is one byte, therefor `char letter = 'A'` it is using one block of memory (1 byte).
+
+We can access the **Address information** by using the character **&**, which will be in hex.
+
+```c
+char a = "A"; // Char is 1 byte
+
+printf("%p",&a); // output in hex
+
+```
+
+### Pointers
+
+Pointer is a variable like reference that holds a memory address ato another variable, array, etc ...
+Usually a pointer is indicated by the symbol **\***. Some tasks are performed more easily with pointers.
+
+##### Advantages of Pointers in C
+
+1. **Efficient Memory Access**
+
+   - Pointers allow direct access to memory, making it faster to access and modify values, especially in large data structures like arrays or matrices.
+
+2. **Dynamic Memory Allocation**
+
+   - Pointers enable dynamic memory allocation using functions like `malloc()`, `calloc()`, and `realloc()`, which allows for flexible memory management at runtime.
+
+3. **Efficient Array and String Handling**
+
+   - Pointers allow more efficient array manipulation and string handling by passing memory addresses rather than copying entire arrays or strings.
+
+4. **Call by Reference**
+
+   - Pointers enable the "call by reference" mechanism, allowing functions to modify the actual values of arguments (e.g., passing large structures, arrays, or modifying variables).
+
+5. **Data Structures**
+
+   - Pointers are essential for implementing complex data structures like linked lists, trees, graphs, stacks, and queues, where dynamic memory and efficient memory manipulation are required.
+
+6. **Reduced Program Complexity**
+
+   - Pointers make it easier to work with structures such as arrays of structures, function pointers, and pointers to other pointers, allowing better modularity and scalability.
+
+7. **Pointer Arithmetic**
+
+   - Pointers support arithmetic operations (increment, decrement, addition, subtraction), which can be used to traverse arrays, buffers, or memory regions efficiently.
+
+8. **Improved Performance**
+
+   - Passing large data structures like arrays or structs by pointer, instead of copying them, leads to better performance, especially in time-critical applications.
+
+9. **Function Pointers**
+
+   - Pointers can store the address of functions, enabling more dynamic and flexible function execution. This can be used for callback functions, implementing tables of functions, or polymorphism-like behavior.
+
+10. **Memory Sharing**
+    - Pointers allow multiple variables or functions to access and modify the same data by sharing the memory address, avoiding the need to copy data.
+
+```c
+
+int age = 21;
+// Create a pointer
+int *pAge = &age; // this is the naming convention of pointers
+
+printf("\nAddress : %p", &age);
+printf("\nUser pointer for address : %p", pAge);
+
+printf("\nValue : %d", age);
+printf("\nStore address value of the pointer %d", *pAge);
+```
+
+**_Important Note:_** With **\*pointer** we are extracting a value at the given address of the pointer. This is called **dereferencing**.
+
+As good practice the type of the pointer has to be the same as the type of the item we are pointing to. But this will be always 8 bytes since it is only storing hex addresses.
+
+##### Passing a pointer as an argument to a function
+
+```c
+void f_age(int *pAge){
+    printf("\n%d", *pAge);
+}
+
+int main(){
+
+    int age = 10;
+    int *pAge = &age;
+
+    f_age(pAge);
+    return 0;
+}
+```
+
+##### Good Practice
+
+It is considered good practice to assign **NULL** to the pointer variable when where are defining it:
+
+```c
+int age = 123;
+int *pAge = NULL;
+
+pAge = &age;
+
+```
+
+### Writing to files in C
+
+We can write to a file using the **fopen()** function and defining the mode we want to use. Here is a list of the available modes:
+
+| Mode    | Description                                                                                    | File Exists | File Doesn't Exist |
+| ------- | ---------------------------------------------------------------------------------------------- | ----------- | ------------------ |
+| `"r"`   | Open a file for reading. The file must exist.                                                  | Opens       | Fails              |
+| `"w"`   | Open a file for writing. Creates a new file or truncates the existing file.                    | Truncates   | Creates            |
+| `"a"`   | Open a file for appending. Writes data at the end of the file.                                 | Appends     | Creates            |
+| `"r+"`  | Open a file for reading and writing. The file must exist.                                      | Opens       | Fails              |
+| `"w+"`  | Open a file for reading and writing. Creates a new file or truncates the existing file.        | Truncates   | Creates            |
+| `"a+"`  | Open a file for reading and appending. Reads from the file and writes data at the end.         | Appends     | Creates            |
+| `"rb"`  | Open a binary file for reading. The file must exist.                                           | Opens       | Fails              |
+| `"wb"`  | Open a binary file for writing. Creates a new file or truncates the existing file.             | Truncates   | Creates            |
+| `"ab"`  | Open a binary file for appending. Writes data at the end of the file.                          | Appends     | Creates            |
+| `"r+b"` | Open a binary file for reading and writing. The file must exist.                               | Opens       | Fails              |
+| `"w+b"` | Open a binary file for reading and writing. Creates a new file or truncates the existing file. | Truncates   | Creates            |
+| `"a+b"` | Open a binary file for reading and appending. Reads from the file and writes data at the end.  | Appends     | Creates            |
+
+```c
+
+int main(){
+    // The data type is FILE
+    FILE *pFile = fopen("text.txt","w"); // fopen(name,mode)
+    // Writing to the file
+    fprintf(pFile, "Sponge bob"); // fprintf(pointer,text)
+
+    fclose(pFile); // Good practice to close the file
+
+    return 0;
+}
+
+```
+
+_Note:_ The exit code of a function is always 0.
+
+### Reading the contents of a file
+
+```c
+
+int main(){
+
+    FILE *pF = ("text.txt","r");
+    // Define variable to hold one line of a file at a time
+    char buffer[255];
+    // read a line
+    fgets(buffer,255,pF); //fgets(variable,input_size,pointer)
+    printf("\n%s",buffer); // This will read a single line
+
+    // TODO: To read all of the lines of our file we can use a while loop
+    while(fgets(buffer,255,pF) != NULL){
+        printf("\n%s",buffer); // This will read a single line
+    }
+
+    fclose(pF);
+
+    return 0;
+}
+
+```
+
+We can also do file detection to make sure the file exists first.
+
+```c
+
+FILE *pF = fopen("test.txt", "r");
+
+if (pF == NULL){
+ printf("No file\n");
+}
+
+```
+
+### File Related Functions
+
+Here is a table of all the file related functions available:
+
+| Function     | Description                                                                     |
+| ------------ | ------------------------------------------------------------------------------- |
+| `fopen()`    | Opens a file with a specified mode (`"r"`, `"w"`, `"a"`, etc.).                 |
+| `fclose()`   | Closes an open file, freeing up resources.                                      |
+| `fgets()`    | Reads a line or a specified number of characters from a file into a string.     |
+| `fputs()`    | Writes a string to a file (does not add a newline).                             |
+| `fprintf()`  | Writes formatted output to a file, similar to `printf`.                         |
+| `fscanf()`   | Reads formatted input from a file, similar to `scanf`.                          |
+| `fread()`    | Reads binary data from a file into a buffer.                                    |
+| `fwrite()`   | Writes binary data from a buffer to a file.                                     |
+| `fseek()`    | Moves the file pointer to a specified location in the file.                     |
+| `ftell()`    | Returns the current position of the file pointer.                               |
+| `rewind()`   | Moves the file pointer to the beginning of the file.                            |
+| `fgetpos()`  | Gets the current file position (suitable for use with `fsetpos`).               |
+| `fsetpos()`  | Sets the file position to a previously stored value (from `fgetpos`).           |
+| `feof()`     | Checks if the end of a file has been reached.                                   |
+| `ferror()`   | Checks if a file error has occurred.                                            |
+| `clearerr()` | Clears the error and end-of-file indicators for a file.                         |
+| `remove()`   | Deletes a file from the filesystem.                                             |
+| `rename()`   | Renames or moves a file.                                                        |
+| `tmpfile()`  | Creates a temporary file that is automatically deleted when closed.             |
+| `tmpnam()`   | Generates a unique temporary file name.                                         |
+| `perror()`   | Prints an error message to `stderr` based on the current value of `errno`.      |
+| `setvbuf()`  | Sets the buffering mode for a file (e.g., fully buffered, line buffered, etc.). |
+| `fflush()`   | Flushes the output buffer to a file.                                            |
 
 ### ASCII Table
 
